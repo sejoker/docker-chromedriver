@@ -13,13 +13,11 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* google-chrome-stable_current_amd64.deb
 
 # chrome driver
-RUN apt-get --yes --force-yes install unzip
-chrome_driver_version=$(curl -s http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-chrome_driver_url=http://chromedriver.storage.googleapis.com/${chrome_driver_version}/chromedriver_linux64.zip
-RUN rm -rf chromedriver_linux64.zip
-RUN wget -q $chrome_driver_url
-RUN unzip -o chromedriver_linux64.zip -d /usr/bin
-RUN chmod 777 /usr/bin/chromedriver
+RUN wget -O /tmp/chromedriver-version http://chromedriver.storage.googleapis.com/LATEST_RELEASE && \
+    wget http://chromedriver.storage.googleapis.com/`cat /tmp/chromedriver-version`/chromedriver_linux64.zip && \
+    unzip chromedriver_linux64.zip -d /usr/bin && \
+    rm /tmp/chromedriver-version chromedriver_linux64.zip && \
+    chmod 777 /usr/bin/chromedriver
 
 # chrome driver fix https://github.com/SeleniumHQ/docker-selenium/issues/87
 RUN sh -c 'echo "DBUS_SESSION_BUS_ADDRESS=/dev/null" >> /etc/environment'
