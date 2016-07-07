@@ -1,6 +1,7 @@
 FROM node:4
 
 RUN apt-get update && apt-get --yes --force-yes install screen
+RUN apt-get --yes --force-yes install unzip
 
 # chrome
 RUN apt-get update && \
