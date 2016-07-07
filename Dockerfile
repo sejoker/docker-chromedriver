@@ -2,17 +2,14 @@ FROM node:4
 
 RUN apt-get update && apt-get --yes --force-yes install screen
 
-
-# chrome dependencies
-RUN apt-get --yes --force-yes install libxss1
-RUN apt-get --yes --force-yes install libappindicator1
-RUN apt-get --yes --force-yes install libindicator7
-RUN apt-get --yes --force-yes install fonts-liberation
-
 # chrome
-RUN rm -rf google-chrome*.deb
-RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN dpkg -i google-chrome*.deb
+RUN apt-get update && \
+    apt-get -y install libglib2.0 libnss3-dev libxtst6 libxss1 libgconf-2-4 libfontconfig1 libpango1.0-0 libxcursor1 libxcomposite1 libasound2 libxdamage1 libxrandr2 libcups2 libgtk2.0-0 wget unzip libappindicator1 libcurl3 xdg-utils libexif12 xvfb fonts-noto fonts-liberation && \
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    dpkg -i google-chrome-stable_current_amd64.deb && \
+    apt-get -f -y install && \
+    sed -i 's/"$@"/"$@" --no-sandbox/' /opt/google/chrome/google-chrome && \
+    rm -rf /var/lib/apt/lists/* google-chrome-stable_current_amd64.deb
 
 # chrome driver
 RUN apt-get --yes --force-yes install unzip
