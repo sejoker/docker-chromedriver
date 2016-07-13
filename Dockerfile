@@ -23,4 +23,5 @@ RUN wget -O /tmp/chromedriver-version http://chromedriver.storage.googleapis.com
 RUN sh -c 'echo "DBUS_SESSION_BUS_ADDRESS=/dev/null" >> /etc/environment'
 
 # setting up localhost as 127.0.0.1 (for grid)
-RUN sed -i 's/0.0.0.0/127.0.0.1/g' /etc/hosts
+RUN -it --add-host localhost:127.0.0.1 ubuntu cat /etc/hosts
+RUN cat /etc/hosts
