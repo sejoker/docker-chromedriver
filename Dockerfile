@@ -22,12 +22,5 @@ RUN wget -O /tmp/chromedriver-version http://chromedriver.storage.googleapis.com
 # chrome driver fix https://github.com/SeleniumHQ/docker-selenium/issues/87
 RUN sh -c 'echo "DBUS_SESSION_BUS_ADDRESS=/dev/null" >> /etc/environment'
 
-RUN echo "#!/bin/bash" > /cd && \
-    echo 'Xvfb :0 -screen 0 1024x768x24 &' >> /cd && \
-    echo 'DISPLAY=:0 /chromedriver --whitelisted-ips 0.0.0.0/0' >> /cd && \
-    chmod u+x /cd
-
-RUN echo "#!/bin/bash" > /cd-bare && \
-    echo 'Xvfb :0 -screen 0 1024x768x24 &' >> /cd-bare && \
-    echo 'DISPLAY=:0 /chromedriver "$@"' >> /cd-bare && \
-    chmod u+x /cd-bare
+# setting up localhost as 127.0.0.1 (for grid)
+RUN sed -i 's/0.0.0.0/127.0.0.1/g' /etc/hosts
