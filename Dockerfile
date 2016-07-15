@@ -1,6 +1,6 @@
 FROM node:4
 
-RUN apt-get update && apt-get --yes --force-yes install screen
+RUN apt-get update
 RUN apt-get --yes --force-yes install unzip
 
 # chrome
@@ -18,10 +18,3 @@ RUN wget -O /tmp/chromedriver-version http://chromedriver.storage.googleapis.com
     unzip chromedriver_linux64.zip -d /usr/bin && \
     rm /tmp/chromedriver-version chromedriver_linux64.zip && \
     chmod 777 /usr/bin/chromedriver
-
-# chrome driver fix https://github.com/SeleniumHQ/docker-selenium/issues/87
-RUN sh -c 'echo "DBUS_SESSION_BUS_ADDRESS=/dev/null" >> /etc/environment'
-
-# setting up localhost as 127.0.0.1 (for grid)
-# RUN --add-host localhost:127.0.0.1
-RUN cat /etc/hosts
